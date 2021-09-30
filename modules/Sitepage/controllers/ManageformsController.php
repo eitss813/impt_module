@@ -105,7 +105,6 @@ class Sitepage_ManageformsController extends Core_Controller_Action_Standard
         $this -> view -> params = $formValues;
 
 
-
     }
     public function createAction()
     {
@@ -471,6 +470,7 @@ class Sitepage_ManageformsController extends Core_Controller_Action_Standard
         $standardFields = array();
         $advancedFields = array();
         $analyticsFields = array();
+      
         foreach( $types as $fieldType => $info ) {
 
 
@@ -3452,7 +3452,7 @@ class Sitepage_ManageformsController extends Core_Controller_Action_Standard
     {
         $post_val = @json_decode($_POST['post_val'], true);
         
-        
+       
         $new_entry_form = new Yndynamicform_Form_Standard(
         array(
             'item' => new Yndynamicform_Model_Entry(array()),
@@ -3477,7 +3477,7 @@ class Sitepage_ManageformsController extends Core_Controller_Action_Standard
             
             $scriptString .= '</script>';
         }
-        
+      
         echo $scriptString;
         exit();
         

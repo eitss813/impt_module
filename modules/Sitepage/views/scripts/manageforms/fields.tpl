@@ -84,6 +84,34 @@
         <div class="layout_middle">
             <?php include_once APPLICATION_PATH . '/application/modules/Sitepage/views/scripts/edit_tabs.tpl'; ?>
 
+            <?php
+            $formId = isset($_GET['id']) ? $_GET['id'] : 0;
+             $formmappingTable = Engine_Api::_()->getDbtable('formmappings', 'impactx');
+               $formmappingTable->isRoleForm($formId);
+               
+               if($formmappingTable->isRoleForm($formId)) { ?>
+               
+                <div  style="display: flex;justify-content: space-between;">
+                 <div style="display: flex">
+                     <a href="javascript:void(0)" onclick="goBack()" class="yndform_backform" ><span style="font-size: 18px;" class="ynicon yn-arr-left">Back &nbsp;</span></a>
+                     
+                      <?php echo $this->
+                     partial('application/modules/Sitepage/views/scripts/sitepage_dashboard_section_header.tpl', array(
+                     'sitepage_id'=>$this->sitepage->page_id,'sectionTitle'=> 'Manage fields : '.$this->form->getTitle(), 'sectionDescription' => '')); ?>
+
+                 </div>
+                
+                 <div class="yndform_manage_fields_back" style="float:right;    margin: unset !important;">
+                     <?php $url = 'dynamic-form/form/'.$this->form->getIdentity().'/'.$this->form->title.'/type/preview/page_id/'.$this->sitepage->page_id; ?>
+                     <a style="font-size: 17px;" href="<?php  echo $url;?>" target="_blank">Preview</a>
+                 </div>
+
+             </div>
+
+<?php
+              
+               }else {
+             ?>
              <div  style="display: flex;justify-content: space-between;">
                  <div style="display: flex">
                      <?php echo $this->htmlLink(array(
@@ -106,6 +134,7 @@
                  </div>
 
              </div>
+             <?php }?>
             <div class="sitepage_edit_content">
 
                   <!-- inner content start -->
@@ -255,6 +284,12 @@
 
 
 <script>
+    
+    function goBack() {
+  window.history.back();
+}
+    
+    
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
         console.log('--------------------------------------------------1111222');

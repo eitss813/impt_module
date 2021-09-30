@@ -19,6 +19,23 @@ $this->headScript()
 
             <?php include_once APPLICATION_PATH . '/application/modules/Sitepage/views/scripts/edit_tabs.tpl'; ?>
 
+            <?php
+               $formId =  $this->form_id;
+             $formmappingTable = Engine_Api::_()->getDbtable('formmappings', 'impactx');
+               $formmappingTable->isRoleForm($formId);
+               
+               if($formmappingTable->isRoleForm($formId)) { ?>
+               <div style="display: flex;">
+                 <a href="javascript:void(0)" onclick="goBack()" class="yndform_backform" ><span style="font-size: 18px;" class="ynicon yn-arr-left">Back &nbsp;</span></a>
+               
+                     <?php echo $this->partial('application/modules/Sitepage/views/scripts/sitepage_dashboard_section_header.tpl', array(
+                'sitepage_id'=>$this->sitepage->page_id,
+                'sectionTitle'=> 'Form Submissions : '.$this->yndform->getTitle(),
+                'sectionDescription' => ''
+                )); ?>
+               </div>
+               <?php } else { ?>
+            
             <div style="display: flex;">
 
                 <?php echo $this->htmlLink(array(
@@ -38,12 +55,12 @@ $this->headScript()
                 )); ?>
 
             </div>
-
+<?php } ?>
             <div class="sitepage_edit_content">
 
 
-                <button id="form_submitted_btn" class="accordion form_submitted" onclick="openAccordion('form_submitted',1)">Forms Submitted -  (<?php echo $this->totalSubmission ; ?>) <span id="form_submitted_spinner"></span></button>
-
+                <!--<button id="form_submitted_btn" class="accordion form_submitted" onclick="openAccordion('form_submitted',1)">Forms Submitted -  (<?php echo $this->totalSubmission ; ?>) <span id="form_submitted_spinner"></span></button>
+-->
                 <div id="form_submitted_panel" class="panel form_submitted_panel">
                     <?php if ($this->form_submitted_paginator): ?>
 
@@ -71,7 +88,7 @@ $this->headScript()
 
                                 <th><?php echo $this->translate("Submitted By") ?></th>
 
-                                <th><?php echo $this->translate("Submitted Project") ?></th>
+<!--                                <th><?php echo $this->translate("Submitted Project") ?></th>-->
 
                                 <th field="creation_date">
                                     <a href="javascript:void(0);" onclick="changeOrder('creation_date', 'ASC')">
@@ -113,16 +130,16 @@ $this->headScript()
                                     ?>
                                 </td>
 
-                                <td>
-                                    <?php if ($entry && $entry->project_id): ?>
-                                    <?php $project = Engine_Api::_()->getItem('sitecrowdfunding_project', $entry->project_id); ?>
-                                    <?php if ($project): ?>
-                                    <?php echo $this->htmlLink($project->getHref(), $this->translate($project->getTitle())) ?>
-                                    <?php endif; ?>
-                                    <?php else: ?>
+                              <!--  <td>
+                                    <?php// if ($entry && $entry->project_id): ?>
+                                    <?php// $project = Engine_Api::_()->getItem('sitecrowdfunding_project', $entry->project_id); ?>
+                                    <?php// if ($project): ?>
+                                    <?php// echo $this->htmlLink($project->getHref(), $this->translate($project->getTitle())) ?>
+                                    <?php// endif; ?>
+                                    <?php// else: ?>
                                     -
-                                    <?php endif; ?>
-                                </td>
+                                    <?php //endif; ?>
+                                </td> -->
 
                                 <td>
                                     <?php
@@ -217,8 +234,8 @@ $this->headScript()
 
                 <br/>
 
-                <button id="form_assigned_btn" class="accordion form_assigned" onclick="openAccordion('form_assigned',1)">Forms Assigned - (<?php echo $this->totalAssign ; ?>) <span id="form_assigned_spinner"></span></button>
-
+               <!-- <button id="form_assigned_btn" class="accordion form_assigned" onclick="openAccordion('form_assigned',1)">Forms Assigned - (<?php echo $this->totalAssign ; ?>) <span id="form_assigned_spinner"></span></button>
+-->
                 <div id="form_assigned_panel" class="panel form_assigned_panel">
                     <?php if ($this->form_assigned_paginator): ?>
                     <div>
@@ -353,6 +370,9 @@ $this->headScript()
 <div id="hidden_ajax_data" style="display: none;"></div>
 
 <script>
+      function goBack() {
+  window.history.back();
+}
     window.onload = function () {
         let tab = '<?php echo $this->tab; ?>';
         if(tab == 'form_submitted') {

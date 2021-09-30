@@ -280,4 +280,20 @@ class Yndynamicform_Model_DbTable_Entries extends Engine_Db_Table
         return $select-> query()->fetchAll();
 
     }
+
+    public function getEntryIDByOwneridAndFormId($form_id,$owner_id){
+        $rName = $this->info('name');
+
+        $select = $this->select()-> from($rName, 'entry_id');
+
+        $select
+            ->where("$rName.form_id = ?", $form_id)
+            ->where("$rName.owner_id = ?", $owner_id);
+        $select->order('entry_id DESC');
+        $select->limit(1);
+
+        return $select-> query()->fetchColumn();
+
+    }
+
 }
